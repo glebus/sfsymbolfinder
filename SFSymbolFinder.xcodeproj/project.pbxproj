@@ -6,10 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		CB0931F52CAFF25E006A6705 /* SFSymbolEnum in Frameworks */ = {isa = PBXBuildFile; productRef = CB0931F42CAFF25E006A6705 /* SFSymbolEnum */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
 		CB0931E22CAFF178006A6705 /* SFSymbolFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SFSymbolFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -27,7 +23,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CB0931F52CAFF25E006A6705 /* SFSymbolEnum in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,7 +65,6 @@
 			);
 			name = SFSymbolFinder;
 			packageProductDependencies = (
-				CB0931F42CAFF25E006A6705 /* SFSymbolEnum */,
 			);
 			productName = SFSymbolFinder;
 			productReference = CB0931E22CAFF178006A6705 /* SFSymbolFinder.app */;
@@ -101,7 +95,6 @@
 			mainGroup = CB0931D92CAFF178006A6705;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				CB0931F32CAFF25E006A6705 /* XCRemoteSwiftPackageReference "SFSymbolEnum" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CB0931E32CAFF178006A6705 /* Products */;
@@ -333,25 +326,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		CB0931F32CAFF25E006A6705 /* XCRemoteSwiftPackageReference "SFSymbolEnum" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/jollyjinx/SFSymbolEnum.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.5.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		CB0931F42CAFF25E006A6705 /* SFSymbolEnum */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CB0931F32CAFF25E006A6705 /* XCRemoteSwiftPackageReference "SFSymbolEnum" */;
-			productName = SFSymbolEnum;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CB0931DA2CAFF178006A6705 /* Project object */;
 }

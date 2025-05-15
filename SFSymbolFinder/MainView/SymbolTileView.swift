@@ -9,16 +9,22 @@ import SFSymbolEnum
 
 struct SymbolTileView: View {
     var symbol: SFSymbol
+    var searchResult: SearchResult?
 
     var body: some View {
         VStack {
-            symbol.image
+            Image(systemName: symbol.symbol)
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: 50, maxHeight: 50)
 
-            Text(symbol.rawValue)
+            Text(symbol.desc)
                 .font(.caption)
+
+            if let searchResult {
+                Text(searchResult.distance.formatted())
+                    .font(.caption)
+            }
         }
     }
 }

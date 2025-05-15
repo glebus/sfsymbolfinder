@@ -34,35 +34,64 @@ class SymbolFinder {
     ]
 
     var searchResults: [SearchResult] = []
+    
+    // For debouncing search
+    private var searchTask: Task<Void, Never>? = nil
+    
+    // NaturalLanguage embedding - initialize once
+    private let embedding: NLEmbedding? = NLEmbedding.sentenceEmbedding(for: .english)
 
     var text: String = "" {
         didSet {
-            updateProbabilities()
+            debouncedSearch()
         }
     }
 
     func updateProbabilities() {
-        guard let results = symbolsSearch(symbols: symbols, searchTerm: text) else { return }
-
-        searchResults = results
+        debouncedSearch()
     }
 
-    private func symbolsSearch(symbols: [SFSymbol], searchTerm: String) -> [SearchResult]? {
-        guard let embedding = NLEmbedding.sentenceEmbedding(for: .english) else {
-            return nil
+    private func debouncedSearch() {
+        searchTask?.cancel()
+
+        if text.isEmpty {
+            searchResults = []
+            return
         }
 
-        let lowercasedTerm = searchTerm.lowercased()
+        searchTask = Task { [weak self] in
+            guard let self = self else { return }
 
-        let distances = symbols.compactMap { symbol in
-            let distance = embedding.distance(between: lowercasedTerm, and: symbol.desc)
-            if distance < 2.0 {
-                return SearchResult(symbol: symbol, distance: distance)
-            } else {
-                return nil
+            try? await Task.sleep(nanoseconds: 300_000_000) // 300ms
+            
+            if Task.isCancelled { return }
+
+            if let results = await performSearch() {
+                await MainActor.run {
+                    if !Task.isCancelled {
+                        self.searchResults = results
+                    }
+                }
             }
         }
+    }
 
-        return distances.sorted(by: { $0.distance < $1.distance })
+    private func performSearch() async -> [SearchResult]? {
+        let searchTerm = text.lowercased()
+
+        return await Task.detached { () -> [SearchResult]? in
+            guard let embedding = self.embedding else { return nil }
+            
+            let distances = self.symbols.compactMap { symbol in
+                let distance = embedding.distance(between: searchTerm, and: symbol.desc.lowercased())
+                if distance < 2.0 {
+                    return SearchResult(symbol: symbol, distance: distance)
+                } else {
+                    return nil
+                }
+            }
+            
+            return distances.sorted(by: { $0.distance < $1.distance })
+        }.value
     }
 }
